@@ -1,0 +1,119 @@
+'日本科学未来館 1階':
+  id: A1
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+1F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+1F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+1F'
+
+'日本科学未来館 3階':
+  id: A3
+  image: 
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+3F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+3F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+3F'
+
+'日本科学未来館 7階':
+  id: A7
+  image: 
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+7F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+7F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+7F'
+
+'産業技術総合研究所臨海副都心センター 1階':
+  id: B1
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研本館+1F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研本館+1F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研本館+1F'
+
+'産業技術総合研究所臨海副都心センター本館 4階':
+  id: B4
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研本館+4F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研本館+4F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研本館+4F'
+
+'産業技術総合研究所臨海副都心センター別館 11階':
+  id: B9
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研別館+11F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研別館+11F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研別館+11F'
+
+'東京都立産業技術研究センター 1階':
+  id: C1
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+1F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+1F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+1F'
+
+'東京都立産業技術研究センター 中2階':
+  id: C2
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+M2F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+M2F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+M2F'
+
+'東京都立産業技術研究センター 5階':
+  id: C5
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+5F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+5F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+5F'
+
+'周辺屋外':
+  id: D
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=周辺屋外'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=周辺屋外'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=周辺屋外'
+
+'東京国際交流館 1階':
+  id: E1
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=東京国際交流館+1F'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=東京国際交流館+1F'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=東京国際交流館+1F'
+
+'東京国際交流館':
+  id: E9
+  image:
+    - device: iOS
+      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=東京国際交流館'
+    - device: iOS_2x
+      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=東京国際交流館'
+    - device: Android_ldpi
+      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=東京国際交流館'
