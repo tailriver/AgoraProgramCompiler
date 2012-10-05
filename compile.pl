@@ -11,10 +11,10 @@ use Agora::Area;
 use Agora::Category;
 use Agora::Constant;
 use Agora::Program;
-use DBI;
+use Agora::Schema;
 use HTML::TreeBuilder;
-use XML::Simple;
-use YAML;
+
+my $sqlite_file = $ARGV[0];
 
 my %table_to_en = (
 	'主催' => 'sponsor',
@@ -25,40 +25,39 @@ my %table_to_en = (
 my $area     = Agora::Area->new('area.yml');
 my $category = Agora::Category->new('category.yml');
 
-my $sqlite_file = $ARGV[0] !~ /\.xml$/i ? $ARGV[0] : undef;
-my $xml_file    = $ARGV[0] =~ /\.xml$/i ? $ARGV[0] : undef;
+my @areas      = $area->as_list;
+my @categories = $category->as_list;
+my @area_images;
+my @entries;
+my @locations;
+my @timeframes;
 
-my @insert_event_keys = qw(title sponsor schedule category areaid areax areay);
-my @insert_timeframe_keys = qw(day start end);
-
-my($dbh, $insert_event, $insert_timeframe);
-if ($sqlite_file) {
-	unlink $sqlite_file;
-	$dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_file");
-	$dbh->{AutoCommit} = 0;
-	$dbh->do('CREATE TABLE event (eid TEXT PRIMARY KEY, title TEXT, sponsor TEXT, schedule TEXT, category TEXT, areaid INTEGER, areax REAL, areay REAL)');
-	$dbh->do('CREATE TABLE timeframe (eid TEXT REFERENCES event(eid), day TEXT, start TEXT, end TEXT, UNIQUE(eid,day,start))');
-	$insert_event = $dbh->prepare("INSERT INTO event (eid,". join(',',@insert_event_keys). ") VALUES (?,". join(',',split(//,'?' x @insert_event_keys)) .")");
-	$insert_timeframe = $dbh->prepare("INSERT INTO timeframe (eid,". join(',',@insert_timeframe_keys). ") VALUES (?,". join(',',split(//,'?' x @insert_timeframe_keys)). ")");
+for my $area (@areas) {
+	my @images = @{delete $area->{image}};
+	for my $image (@images) {
+		$image->{area} = $area->{id};
+		push @area_images, $image;
+	}
 }
 
 my @id_list = Agora::Program::extract_id(Agora::Constant->LOCAL_INDEX);
-my @entries;
 foreach my $id (@id_list) {
 	my $file = sprintf Agora::Constant->LOCAL_DETAIL, $id;
-	open my $EVENT_FILE, '<:encoding(cp932)', $file or die $!;
+	open my $ENTRY_FILE, '<:encoding(cp932)', $file or die $!;
 	local $/ = undef;
-	my $html = <$EVENT_FILE>;
-	close $EVENT_FILE;
+	my $html = <$ENTRY_FILE>;
+	close $ENTRY_FILE;
 
 	my $root = HTML::TreeBuilder->new_from_content($html);
 	my $base   = $root->look_down(id => 'base');
 	my $detail = $root->look_down(id => 'detail');
 
 	my %entry;
-	$entry{id} = $id;
-	$entry{category} = $base->look_down(class => 'category')->as_trimmed_text();
+	$entry{id}       = $id;
 	$entry{title}    = $base->look_down(class => 'title')->as_trimmed_text();
+	$entry{category} = $base->look_down(class => 'category')->as_trimmed_text();
+	$entry{category} = $category->get_id($entry{category});
+	$entry{original} = sprintf Agora::Constant->REMOTE_DETAIL, $id;
 
 	my @base_dl   = $base->find_by_tag_name('dl');
 	my @detail_dl = $detail->find_by_tag_name('dl');
@@ -67,81 +66,66 @@ foreach my $id (@id_list) {
 		$entry{to_en($k)} = $v;
 	}
 
-	$entry{category} = $category->get_id($entry{category});
-
-	$entry{location} = {
-		area => $area->get_id($entry{location}),
-		x    => int((0.05 + 0.9 * rand()) * 1000) / 1000,
-		y    => int((0.05 + 0.9 * rand()) * 1000) / 1000,
+	my($location_y, $location_x) = ($id =~ /(\d)(\d)$/);
+	push @locations, {
+		entry => $id,
+		area  => $area->get_id(delete $entry{location}),
+		x     => int((0.05 + 0.1 * $location_x)*1000)/1000,
+		y     => int((0.05 + 0.1 * $location_y)*1000)/1000,
 	};
 
 	die "multiple time? -> $entry{shedule}" if ($entry{schedule} =~ /-/g) != 1;
-	my($start, $end) = ($entry{schedule} =~ /(\d+:\d+)-(\d+:\d+)$/);
-	my $timeframe_sat = { day => 'Sat', start => $start, end => $end };
-	my $timeframe_sun = { day => 'Sun', start => $start, end => $end };
+
+	my($duration, $start, $end) = ($entry{schedule} =~ /((\d+:\d+)-(\d+:\d+))$/);
 	if ($entry{schedule} =~ m{11/10・11}) {
-		$entry{schedule} = "[Sat] [Sun] $start-$end";
-		$entry{timeframe} = [ $timeframe_sat, $timeframe_sun ];
+		$entry{schedule} = "[Sat] [Sun] $duration";
 	}
 	elsif ($entry{schedule} =~ m{11/10}) {
-		$entry{schedule} = "[Sat] $start-$end";
-		$entry{timeframe} = [ $timeframe_sat ];
+		$entry{schedule} = "[Sat] $duration";
 	}
 	elsif ($entry{schedule} =~ m{11/11}) {
-		$entry{schedule} = "[Sun] $start-$end";
-		$entry{timeframe} = [ $timeframe_sun ];
+		$entry{schedule} = "[Sun] $duration";
 	}
 	else {
-		die "unknown day: $entry{schedule}";
+		die "unparsable schedule expression: $entry{schedule}";
 	}
 
-	if ($sqlite_file) {
-		$entry{areaid} = $entry{location}->{area};
-		$entry{areax}  = $entry{location}->{x};
-		$entry{areay}  = $entry{location}->{y};
-		$insert_event->execute($id, @entry{@insert_event_keys});
-		foreach my $tf (@{$entry{timeframe}}) {
-			my %tf = %$tf;
-			$insert_timeframe->execute($id, @tf{@insert_timeframe_keys});
-		}
-	}
-
-	if ($xml_file) {
-		for (qw(title sponsor schedule)) {
-			$entry{$_} = { content => $entry{$_} };
-		}
-		foreach my $tf (@{$entry{timeframe}}) {
-			$tf->{start} =~ s/://;
-			$tf->{end}   =~ s/://;
+	$start =~ tr/://d;
+	$end   =~ tr/://d;
+	for my $day (qw/Sat Sun/) {
+		if ($entry{schedule} =~ /\[$day\]/) {
+			push @timeframes, {
+				entry => $id,
+				day   => $day,
+				start => $start,
+				end   => $end
+			};
 		}
 	}
 
 	push @entries, \%entry;
 }
-if ($sqlite_file) {
-	$dbh->commit;
-	$dbh->disconnect;
-}
 
-if ($xml_file) {
-	my @areas      = $area->as_list;
-	my @categories = $category->as_list;
+# transaction
 
-	my $xs = XML::Simple->new(RootName => "entrylist");
-	open my $XML, '>:utf8', $xml_file or die $!;
-	say $XML q(<?xml version="1.0" encoding="UTF-8"?>);
-	say $XML q(<!DOCTYPE entrylist PUBLIC "-//tailriver//ScienceAgora 2011 EntryList//EN");
-	say $XML q(  "http://tailriver.net/agoraguide/dtd">);
-	$xs->XMLout(
-		{
-			area => \@areas,
-			category => \@categories,
-			entry => \@entries,
-		},
-		OutputFile => $XML,
-	);
-	close $XML;
-}
+unlink $sqlite_file;
+my $schema = Agora::Schema->connect("dbi:SQLite:dbname=$sqlite_file");
+
+my $txn = sub {
+	my ($resultset, $arrayref) = @_;
+	my $rs = $schema->resultset($resultset);
+	for (@$arrayref) {
+		$rs->create($_);
+	}
+};
+
+$schema->deploy;
+$schema->txn_do($txn, Area      => \@areas);
+$schema->txn_do($txn, AreaImage => \@area_images);
+$schema->txn_do($txn, Category  => \@categories);
+$schema->txn_do($txn, Entry     => \@entries);
+$schema->txn_do($txn, Location  => \@locations);
+$schema->txn_do($txn, Timeframe => \@timeframes);
 
 exit;
 

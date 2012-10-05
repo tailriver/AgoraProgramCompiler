@@ -29,7 +29,7 @@ sub get_id {
 sub as_list {
 	my $self = shift;
 	my @key_order = sort { $self->{$a}{id} cmp $self->{$b}{id} } (keys %$self);
-	return map { +{$_ => $self->{$_}} } @key_order;
+	return map { $self->{$_} } @key_order;
 }
 
 

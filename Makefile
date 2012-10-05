@@ -1,11 +1,7 @@
 distdir=dist
-dbfile=$(distdir)/2012.sqlite3
-xmlfile=$(distdir)/2012.xml
-dtdfile=$(distdir)/dtd
+distfile=$(distdir)/2012.sqlite3
 
-distfiles=$(dbfile) $(xmlfile)
-gzfiles=$(patsubst %,%.gz,$(distfiles))
-
+gzfile=$(patsubst %,%.gz,$(distfile))
 programs=$(wildcard programs/*.html)
 
 all: upload
@@ -13,23 +9,21 @@ all: upload
 fetch:
 	./fetch.pl
 
-update: $(distfiles)
-compress: $(gzfiles)
+update: $(distfile)
+compress: $(gzfile)
 
-upload: update compress $(dtdfile)
-	xmllint --dtdvalid $(dtdfile) $(xmlfile) >/dev/null
+upload: update compress
 	./upload.sh $(distdir)
 
-$(distfiles): $(programs)
+$(distfile): compile.pl $(programs)
 	@mkdir -p $(dir $@)
 	./compile.pl $@
 
 %.gz: %
-	@mkdir -p $(dir $@)
 	gzip -c $< >$@
 
 prove:
 	prove -l
 
 clean:
-	rm -f $(distfiles) $(gzfiles)
+	rm -f $(distfile) $(gzfile)
