@@ -2,118 +2,125 @@
   id: A1
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A1_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A1_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A1_Android@ldpi.png'
 
 '日本科学未来館 3階':
   id: A3
   image: 
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+3F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A3_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+3F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A3_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+3F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A3_Android@ldpi.png'
 
 '日本科学未来館 7階':
   id: A7
   image: 
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+7F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A7_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+7F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A7_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+7F'
+      src: 'http://tailriver.net/agoraguide/2012/area/A7_Android@ldpi.png'
 
 '産業技術総合研究所臨海副都心センター 1階':
   id: B1
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研本館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B1_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研本館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B1_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研本館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B1_Android@ldpi.png'
 
 '産業技術総合研究所臨海副都心センター本館 4階':
   id: B4
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研本館+4F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B4_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研本館+4F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B4_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研本館+4F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B4_Android@ldpi.png'
 
 '産業技術総合研究所臨海副都心センター別館 11階':
   id: B9
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=産総研別館+11F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=産総研別館+11F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=産総研別館+11F'
+      src: 'http://tailriver.net/agoraguide/2012/area/B9_Android@ldpi.png'
 
 '東京都立産業技術研究センター 1階':
   id: C1
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C1_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C1_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C1_Android@ldpi.png'
 
 '東京都立産業技術研究センター 中2階':
   id: C2
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+M2F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C2_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+M2F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C2_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+M2F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C2_Android@ldpi.png'
 
 '東京都立産業技術研究センター 5階':
   id: C5
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=都産技研+5F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C5_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=都産技研+5F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C5_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=都産技研+5F'
+      src: 'http://tailriver.net/agoraguide/2012/area/C5_Android@ldpi.png'
 
 '周辺屋外':
   id: D
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=周辺屋外'
+      src: 'http://tailriver.net/agoraguide/2012/area/D_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=周辺屋外'
+      src: 'http://tailriver.net/agoraguide/2012/area/D_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=周辺屋外'
+      src: 'http://tailriver.net/agoraguide/2012/area/D_Android@ldpi.png'
 
 '東京国際交流館 1階':
   id: E1
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=東京国際交流館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/E1_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=東京国際交流館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/E1_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=東京国際交流館+1F'
+      src: 'http://tailriver.net/agoraguide/2012/area/E1_Android@ldpi.png'
 
 '東京国際交流館':
   id: E9
   image:
     - device: iOS
-      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=東京国際交流館'
+      src: 'http://tailriver.net/agoraguide/2012/area/E9_iOS.png'
     - device: iOS_2x
-      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=東京国際交流館'
+      src: 'http://tailriver.net/agoraguide/2012/area/E9_iOS@2x.png'
     - device: Android_ldpi
-      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=東京国際交流館'
+      src: 'http://tailriver.net/agoraguide/2012/area/E9_Android@ldpi.png'
+
+#    - device: iOS
+#      src: 'http://dummyimage.com/400x300/99ffff/00.png&text=Miraikan+1F'
+#    - device: iOS_2x
+#      src: 'http://dummyimage.com/800x600/ff99ff/00.png&text=Miraikan+1F'
+#    - device: Android_ldpi
+#      src: 'http://dummyimage.com/320x240/ffff99/00.png&text=Miraikan+1F'

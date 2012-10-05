@@ -15,7 +15,7 @@ compress: $(gzfile)
 upload: update compress
 	./upload.sh $(distdir)
 
-$(distfile): compile.pl $(programs)
+$(distfile): compile.pl $(programs) area.yml category.yml
 	@mkdir -p $(dir $@)
 	./compile.pl $@
 
