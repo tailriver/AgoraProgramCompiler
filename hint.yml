@@ -1,0 +1,114 @@
+area:
+  id:
+    description: 会場ID
+    warning: meta information
+  name:
+    description: 会場名称
+  abbrev:
+    description: 会場略称
+
+area_image:
+  area:
+    ref: area.id
+  device:
+    description: 機種とか
+  src:
+    description: 会場マップのURL
+
+category:
+  id:
+    description: 出展形式ID
+    warning: meta information
+  name:
+    description: 出展形式名称
+  abbrev:
+    description: 出展形式略称
+  is_allday:
+    description: 全日出展か時間枠出展か (boolean)
+    warning: use $$$.allday or $$$.not_allday
+
+entry:
+  id:
+    ja: 企画番号
+  title:
+    ja: タイトル
+  category:
+    ja: 出展形式
+  sponsor:
+    ja: 主催
+  cosponsor:
+    ja: 共催等
+  schedule:
+    ja: 日時
+  location:
+    ja: 会場
+  abstract:
+    ja: 概要
+  content:
+    ja: 内容
+  guest:
+    ja: 主な登壇者など
+  reservation:
+    ja: 事前申込
+  website:
+    ja: 参考ページ
+  note:
+    ja: 備考
+  original:
+    description: 情報元URL
+
+hint:
+  id:
+    description: ヒントID
+    warning: meta information
+  table_name:
+    description: テーブル名（'$'は仮想テーブル）
+    warning: meta information
+  column_name:
+    description: カラム名
+    warning: meta information
+  en:
+    description: 英語的表現
+    warning: meta information
+  ja:
+    description: 日本語的表現
+    warning: meta information
+  description:
+    description: このカラムの概要
+    warning: meta information
+  warning:
+    description: 警告（非ヌルなら例外推奨）
+    warning: meta information
+  ref:
+    description: 別のヒントIDへの参照
+    warning: meta information
+
+location:
+  entry:
+    ref: entry.id
+  area:
+    ref: area.id
+  x:
+    description: relative width value from left bound
+    warning: meta information
+  y:
+    description: relative height value from top bound
+    warning: meta information
+
+timeframe:
+  entry:
+    ref: entry.id
+  day:
+    ja: 曜日
+    description: 企画が始まる日
+  start:
+    ja: 開始時刻
+  end:
+    ja: 終了時刻
+
+# virtual table
+"$":
+  allday:
+    ja: 終日出展
+  not_allday:
+    ja: 時間枠出展

@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/lib";
 use Agora::Area;
 use Agora::Category;
 use Agora::Constant;
+use Agora::Hint;
 use Agora::Program;
 use Agora::Schema;
 use HTML::TreeBuilder;
@@ -24,9 +25,11 @@ my %table_to_en = (
 
 my $area     = Agora::Area->new('area.yml');
 my $category = Agora::Category->new('category.yml');
+my $hint     = Agora::Hint->new('hint.yml');
 
 my @areas      = $area->as_list;
 my @categories = $category->as_list;
+my @hints      = $hint->as_list;
 my @area_images;
 my @entries;
 my @locations;
@@ -124,6 +127,7 @@ $schema->txn_do($txn, Area      => \@areas);
 $schema->txn_do($txn, AreaImage => \@area_images);
 $schema->txn_do($txn, Category  => \@categories);
 $schema->txn_do($txn, Entry     => \@entries);
+$schema->txn_do($txn, Hint      => \@hints);
 $schema->txn_do($txn, Location  => \@locations);
 $schema->txn_do($txn, Timeframe => \@timeframes);
 

@@ -14,6 +14,10 @@ __PACKAGE__->add_columns(
 		data_type => 'TEXT',
 		is_nullable => 0,
 	},
+	abbrev => {
+		data_type => 'TEXT',
+		is_nullable => 0,
+	},
 	is_allday => {
 		data_type => 'INTEGER',
 		is_nullable => 0,

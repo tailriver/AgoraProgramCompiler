@@ -1,5 +1,6 @@
 '日本科学未来館 1階':
   id: A1
+  abbrev: 未来館 1F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/A1_iOS.png'
@@ -10,6 +11,7 @@
 
 '日本科学未来館 3階':
   id: A3
+  abbrev: 未来館 3F
   image: 
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/A3_iOS.png'
@@ -20,6 +22,7 @@
 
 '日本科学未来館 7階':
   id: A7
+  abbrev: 未来館 7F
   image: 
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/A7_iOS.png'
@@ -30,6 +33,7 @@
 
 '産業技術総合研究所臨海副都心センター 1階':
   id: B1
+  abbrev: 産総研本館 1F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/B1_iOS.png'
@@ -40,6 +44,7 @@
 
 '産業技術総合研究所臨海副都心センター本館 4階':
   id: B4
+  abbrev: 産総研本館 4F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/B4_iOS.png'
@@ -50,6 +55,7 @@
 
 '産業技術総合研究所臨海副都心センター別館 11階':
   id: B9
+  abbrev: 産総研別館 11F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS.png'
@@ -60,6 +66,7 @@
 
 '東京都立産業技術研究センター 1階':
   id: C1
+  abbrev: 都産技研 1F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/C1_iOS.png'
@@ -70,6 +77,7 @@
 
 '東京都立産業技術研究センター 中2階':
   id: C2
+  abbrev: 都産技研 M2F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/C2_iOS.png'
@@ -80,6 +88,7 @@
 
 '東京都立産業技術研究センター 5階':
   id: C5
+  abbrev: 都産技研 5F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/C5_iOS.png'
@@ -90,6 +99,7 @@
 
 '周辺屋外':
   id: D
+  abbrev: 周辺屋外
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/D_iOS.png'
@@ -100,6 +110,7 @@
 
 '東京国際交流館 1階':
   id: E1
+  abbrev: 国際交流館 1F
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/E1_iOS.png'
@@ -110,6 +121,7 @@
 
 '東京国際交流館':
   id: E9
+  abbrev: 国際交流館
   image:
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/E9_iOS.png'
