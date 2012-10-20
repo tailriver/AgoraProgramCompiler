@@ -18,9 +18,17 @@ use HTML::TreeBuilder;
 my $sqlite_file = $ARGV[0];
 
 my %table_to_en = (
-	'主催' => 'sponsor',
-	'日時' => 'schedule',
-	'会場' => 'location',
+	'主催'   => 'sponsor',
+	'共催等' => 'cosponsor',
+	'概要'   => 'abstract',
+	'日時'   => 'schedule',
+	'会場'   => 'location',
+	'内容'   => 'content',
+	'主な登壇者など' => 'guest',
+	'参考URL' => 'website',
+	'事前申込' => 'res1',
+	'当日申込' => 'res2',
+	'備考'   => 'note',
 );
 
 my $area     = Agora::Area->new('area.yml');
@@ -69,7 +77,29 @@ foreach my $id (@id_list) {
 		$entry{to_en($k)} = $v;
 	}
 
-	my($location_y, $location_x) = ($id =~ /(\d)(\d)$/);
+	{
+		my $s = (delete $entry{res1}). (delete $entry{res2});
+		my($res)  = $s =~ /事前枠（人）：(.*?)申込開始予定日時/;
+		my($open) = $s =~ /当日枠（人）：(.*)$/;
+		my($start, $end)   = $s =~ /開始予定日時：(.*?) 締切予定日時：(.*?)申込方法/;
+		my($method, $note) = $s =~ /申込方法(.*?)特記事項：(.*?)当日枠（人）：/;
+		for ($res, $open) {
+			if ($_ && $_ !~ /名|人/) {
+				$_ .= "名";
+			}
+		}
+		if ($res || $open) {
+			$entry{reservation} = '';
+			$entry{reservation} .= "事前申込枠：$res\n";
+			$entry{reservation} .= "事前申込期間：$start $end\n" if $start;
+			$entry{reservation} .= "事前申込方法：$method\n" if $method;
+			$entry{reservation} .= "特記事項：$note\n" if $note;
+			$entry{reservation} .= "当日参加枠：$open";
+			chomp $entry{reservation};
+		}
+	}
+
+	my($location_y, $location_x) = ($id =~ /(\d)(\d)$/ ? ($1,$2) : (0.5,0.5));
 	push @locations, {
 		entry => $id,
 		area  => $area->get_id(delete $entry{location}),
@@ -77,33 +107,55 @@ foreach my $id (@id_list) {
 		y     => int((0.05 + 0.1 * $location_y)*1000)/1000,
 	};
 
-	die "multiple time? -> $entry{shedule}" if ($entry{schedule} =~ /-/g) != 1;
-
-	my($duration, $start, $end) = ($entry{schedule} =~ /((\d+:\d+)-(\d+:\d+))$/);
-	if ($entry{schedule} =~ m{11/10・11}) {
-		$entry{schedule} = "[Sat] [Sun] $duration";
+	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、・11日（日）14:30-16：00") {
+		$entry{schedule} = "[Sat] 10:30-12:00ほか [Sun] 14:30-16:00";
+		push @timeframes, { entry => $id, day => 'Sat', start => 1030, end => 1200 };
+		push @timeframes, { entry => $id, day => 'Sat', start => 1230, end => 1400 };
+		push @timeframes, { entry => $id, day => 'Sun', start => 1430, end => 1600 };
 	}
-	elsif ($entry{schedule} =~ m{11/10}) {
-		$entry{schedule} = "[Sat] $duration";
+	elsif ($entry{schedule} eq "11月10日（土）13:30-16:30・11日（日）10:00-16:00") {
+		$entry{schedule} = "[Sat] 13:30-16:00 [Sun] 10:00-16:00";
+		push @timeframes, { entry => $id, day => 'Sat', start => 1330, end => 1600 };
+		push @timeframes, { entry => $id, day => 'Sun', start => 1000, end => 1600 };
 	}
-	elsif ($entry{schedule} =~ m{11/11}) {
-		$entry{schedule} = "[Sun] $duration";
+	elsif ($entry{schedule} eq "11月11日（日）10:30-12:00,12:30-14:00") {
+		$entry{schedule} = "[Sun] 10:30-12:00 [Sun] 12:30-14:00";
+		push @timeframes, { entry => $id, day => 'Sun', start => 1030, end => 1200 };
+		push @timeframes, { entry => $id, day => 'Sun', start => 1230, end => 1400 };
 	}
 	else {
-		die "unparsable schedule expression: $entry{schedule}";
+		die "multiple time? -> $entry{schedule}" if ($entry{schedule} =~ tr/-/-/) != 1;
+
+		my($duration, $start, $end) = ($entry{schedule} =~ /((\d+:\d+)-(\d+:\d+))$/);
+		if ($entry{schedule} =~ m{11月10日（土）・11日（日）}) {
+			$entry{schedule} = "[Sat] [Sun] $duration";
+		}
+		elsif ($entry{schedule} =~ m{11月10日（土）}) {
+			$entry{schedule} = "[Sat] $duration";
+		}
+		elsif ($entry{schedule} =~ m{11月11日（日）}) {
+			$entry{schedule} = "[Sun] $duration";
+		}
+		else {
+			die "unparsable schedule expression: $entry{schedule}";
+		}
+
+		$start =~ tr/://d;
+		$end   =~ tr/://d;
+		for my $day (qw/Sat Sun/) {
+			if ($entry{schedule} =~ /\[$day\]/) {
+				push @timeframes, {
+					entry => $id,
+					day   => $day,
+					start => $start,
+					end   => $end
+				};
+			}
+		}
 	}
 
-	$start =~ tr/://d;
-	$end   =~ tr/://d;
-	for my $day (qw/Sat Sun/) {
-		if ($entry{schedule} =~ /\[$day\]/) {
-			push @timeframes, {
-				entry => $id,
-				day   => $day,
-				start => $start,
-				end   => $end
-			};
-		}
+	for (keys %entry) {
+		$entry{$_} = undef unless length $entry{$_};
 	}
 
 	push @entries, \%entry;
@@ -137,6 +189,7 @@ exit;
 sub dl_parse {
 	my $dt = $_[0]->find_by_tag_name('dt')->as_trimmed_text();
 	my $dd = $_[0]->find_by_tag_name('dd')->as_trimmed_text();
+	$dd = '' if $dd eq '-';
 	return ($dt, $dd);
 }
 

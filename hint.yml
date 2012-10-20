@@ -25,7 +25,7 @@ category:
     description: 出展形式略称
   is_allday:
     description: 全日出展か時間枠出展か (boolean)
-    warning: use $$$.allday or $$$.not_allday
+    warning: use $.allday or $.not_allday
 
 entry:
   id:

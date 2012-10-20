@@ -2,6 +2,7 @@ package Agora::Area;
 
 use strict;
 use warnings;
+use utf8;
 
 use Carp;
 use YAML;
@@ -20,8 +21,10 @@ sub new {
 
 sub get_id {
 	my($self, $key) = @_;
+	$key =~ tr/ //d;
+	$key =~ tr/Ａ-Ｚ/A-Z/;
 	if (!exists $self->{$key}) {
-		croak "unknown category name '$key' found";
+		croak "unknown area name '$key' found";
 	}
 	return $self->{$key}{id};
 }

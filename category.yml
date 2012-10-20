@@ -10,23 +10,59 @@
   abbrev: 実演・工作
   is_allday: 1
 
-'終日出展：ワークショップ':
+'終日出展：対話型ワークショップ':
   id: a3
-  name: ワークショップ
-  abbrev: ワークショップ
+  name: 対話型ワークショップ
+  abbrev: 対話型ワークショップ
   is_allday: 1
 
-'終日出展：ポスター発表':
+'終日出展：ポスター':
   id: a4
-  name: ポスター発表
+  name: ポスター
   abbrev: ポスター
   is_allday: 1
 
-'終日出展：その他':
+'終日出展：展示・実演':
   id: a5
+  name: 展示・実演
+  abbrev: 展示・実演
+  is_allday: 1
+
+'終日出展：実験・工作':
+  id: a6
+  name: 実験・工作
+  abbrev: 実験・工作
+  is_allday: 1
+
+'終日出展：ショー・講演':
+  id: a7
+  name: ショー・講演
+  abbrev: ショー・講演
+  is_allday: 1
+
+'終日出展：その他':
+  id: a9
   name: その他
   abbrev: その他
   is_allday: 1
+
+'時間枠出展：展示・実演':
+  id: b7
+  name: 展示・実演
+  abbrev: 展示・実演
+  is_allday: 0
+
+'時間枠出展：ショー・講演':
+  id: b6
+  name: ショー・講演
+  abbrev: ショー・講演
+  is_allday: 0
+
+'時間枠出展：対話型ワークショップ':
+  id: b5
+  name: 対話型ワークショップ
+  abbrev: 対話型ワークショップ
+  is_allday: 0
 
 '時間枠出展：シンポジウム・トークセッション':
   id: b1
@@ -47,7 +83,7 @@
   is_allday: 0
 
 '時間枠出展：その他':
-  id: b4
+  id: b9
   name: その他
   abbrev: その他
   is_allday: 0
