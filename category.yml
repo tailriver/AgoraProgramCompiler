@@ -1,43 +1,31 @@
-'終日出展：展示・説明':
-  id: a1
-  name: 展示・説明
-  abbrev: 展示・説明
-  is_allday: 1
-
-'終日出展：実演・工作':
-  id: a2
-  name: 実演・工作
-  abbrev: 実演・工作
-  is_allday: 1
-
-'終日出展：対話型ワークショップ':
-  id: a3
-  name: 対話型ワークショップ
-  abbrev: 対話型ワークショップ
-  is_allday: 1
-
-'終日出展：ポスター':
-  id: a4
-  name: ポスター
-  abbrev: ポスター
-  is_allday: 1
-
 '終日出展：展示・実演':
-  id: a5
+  id: a1
   name: 展示・実演
   abbrev: 展示・実演
   is_allday: 1
 
 '終日出展：実験・工作':
-  id: a6
+  id: a2
   name: 実験・工作
   abbrev: 実験・工作
   is_allday: 1
 
 '終日出展：ショー・講演':
-  id: a7
+  id: a3
   name: ショー・講演
   abbrev: ショー・講演
+  is_allday: 1
+
+'終日出展：対話型ワークショップ':
+  id: a4
+  name: 対話型ワークショップ
+  abbrev: 対話型ワークショップ
+  is_allday: 1
+
+'終日出展：ポスター':
+  id: a5
+  name: ポスター
+  abbrev: ポスター
   is_allday: 1
 
 '終日出展：その他':
@@ -47,39 +35,27 @@
   is_allday: 1
 
 '時間枠出展：展示・実演':
-  id: b7
+  id: b1
   name: 展示・実演
   abbrev: 展示・実演
   is_allday: 0
 
 '時間枠出展：ショー・講演':
-  id: b6
+  id: b2
   name: ショー・講演
   abbrev: ショー・講演
   is_allday: 0
 
 '時間枠出展：対話型ワークショップ':
-  id: b5
+  id: b3
   name: 対話型ワークショップ
   abbrev: 対話型ワークショップ
   is_allday: 0
 
 '時間枠出展：シンポジウム・トークセッション':
-  id: b1
+  id: b4
   name: シンポジウム・トークセッション
   abbrev: シンポジウムなど
-  is_allday: 0
-
-'時間枠出展：サイエンスショー・上映・演示':
-  id: b2
-  name: サイエンスショー・上映・演示
-  abbrev: 上映・演示など
-  is_allday: 0
-
-'時間枠出展：ワークショップ・サイエンスカフェ':
-  id: b3
-  name: ワークショップ・サイエンスカフェ
-  abbrev: ワークショップなど
   is_allday: 0
 
 '時間枠出展：その他':

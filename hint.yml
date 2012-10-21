@@ -49,7 +49,7 @@ entry:
   guest:
     ja: 主な登壇者など
   reservation:
-    ja: 事前申込
+    ja: 参加方法
   website:
     ja: 参考ページ
   note:
