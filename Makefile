@@ -18,6 +18,7 @@ upload: update compress
 $(distfile): compile.pl $(programs) area.yml category.yml hint.yml
 	@mkdir -p $(dir $@)
 	./compile.pl $@
+	sqlite3 $@ "vacuum"
 
 %.gz: %
 	gzip -c $< >$@
