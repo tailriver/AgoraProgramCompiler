@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 
+use v5.16;
 use strict;
 use warnings;
 use utf8;
@@ -59,6 +60,8 @@ foreach my $id (@id_list) {
 	my $html = <$ENTRY_FILE>;
 	close $ENTRY_FILE;
 
+	$html =~ s/<a [^>]*href=["']([^"']+)[^>]*>(.+?)<\/a>/$2( $1 )/g;
+
 	my $root = HTML::TreeBuilder->new_from_content($html);
 	my $base   = $root->look_down(id => 'base');
 	my $detail = $root->look_down(id => 'detail');
@@ -77,6 +80,15 @@ foreach my $id (@id_list) {
 		$entry{to_en($k)} = $v;
 	}
 
+	if ($id eq 'OP') {
+		if ($entry{title} =~ /http/) {
+			$entry{title} =~ s/ \(.*\)$//;
+		}
+		else {
+			warn "$id title hook NOT WORKED\n";
+		}
+	}
+
 	{
 		my $s = (delete $entry{res1}). (delete $entry{res2});
 		my($res)  = $s =~ /事前枠（人）：(.*?)申込開始予定日時/;
@@ -84,14 +96,31 @@ foreach my $id (@id_list) {
 		my($start, $end)   = $s =~ /開始予定日時：(.*?) 締切予定日時：(.*?)申込方法/;
 		my($method, $note) = $s =~ /申込方法(.*?)特記事項：(.*?)当日枠（人）：/;
 		for ($res, $open) {
-			if ($_ && $_ !~ /名|人/) {
+			if ($_ && $_ !~ /名|人/ && $_ ne "残り") {
 				$_ .= "名";
 			}
 		}
+		$method =~ s/http s:/https:/;
+		if ($id eq "Bb-601") {
+			my $sss = '電子メール（science_pr@yahoo.co.jp" target="_blank">Webフォームから';
+			if ($method =~ /$sss/) {
+				$method =~ s/$sss/電子メール（science_pr\@yahoo.co.jp）/;
+			}
+			else {
+				warn "$id reservation hook NOT WORKED\n";
+			}
+		}
+		$method =~ s/Webフォーム\( ([^ ]+) \)から/$1 /g;
+		$method =~ s/ウェブサイト上フォーム（([^）]*)）/$1 /g;
+		$method =~ s/電子メール（([^）]*)）/$1 /g;
+		$method =~ s/電話（([^）]*)）/$1 /g;
+		$method =~ s/その他（([^）]*)）/$1 /g;
+		$method =~ tr/ / /s;
+		$method =~ s/ $//;
 		if ($res || $open) {
 			$entry{reservation} = '';
 			$entry{reservation} .= "事前申込枠：$res\n";
-			$entry{reservation} .= "事前申込期間：$start $end\n" if $start;
+			$entry{reservation} .= "事前申込期間：$start $end\n" if $end;
 			$entry{reservation} .= "事前申込方法：$method\n" if $method;
 			$entry{reservation} .= "特記事項：$note\n" if $note;
 			$entry{reservation} .= "当日参加枠：$open";
@@ -108,7 +137,7 @@ foreach my $id (@id_list) {
 	};
 
 	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、・11日（日）14:30-16：00") {
-		$entry{schedule} = "[Sat] 10:30-12:00ほか [Sun] 14:30-16:00";
+		$entry{schedule} = "[Sat] 10:30-12:00 [Sat] 12:30-14:00 [Sun] 14:30-16:00";
 		push @timeframes, { entry => $id, day => 'Sat', start => 1030, end => 1200 };
 		push @timeframes, { entry => $id, day => 'Sat', start => 1230, end => 1400 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1430, end => 1600 };
@@ -151,6 +180,24 @@ foreach my $id (@id_list) {
 					end   => $end
 				};
 			}
+		}
+	}
+
+	$entry{website} =~ s/\(.+\)//;
+	if ($id eq "Aa-003") {
+		if ($entry{website} eq "http://biodiversity.or.jp/ scienceagora.html") {
+			$entry{website} =~ s/ //;
+		}
+		else {
+			warn "$id website hook NOT WORKED\n";
+		}
+	}
+	elsif($id eq "Ab-354") {
+		if ($entry{website} eq "http;//www.wadaju.com") {
+			$entry{website} =~ s/;/:/;
+		}
+		else {
+			warn "$id website hook NOT WORKED\n";
 		}
 	}
 
