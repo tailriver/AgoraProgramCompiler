@@ -55,7 +55,7 @@ entry:
   note:
     ja: 備考
   original:
-    description: 情報元URL
+    ja: 公式ウェブサイトの企画詳細
 
 hint:
   id:

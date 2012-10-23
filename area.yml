@@ -240,9 +240,9 @@
     - device: Android_ldpi
       src: 'http://tailriver.net/agoraguide/2012/area/B1_Android@ldpi.png'
 
-'産業技術総合研究所　別館1階、プロムナード公園（屋外）':
+'産業技術総合研究所　別館1階':
   id: Bx2
-  abbrev: 産総研 別館1階＋屋外
+  abbrev: 産総研 別館1階
   image: 
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/B1_iOS.png'

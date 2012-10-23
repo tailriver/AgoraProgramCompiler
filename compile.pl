@@ -54,6 +54,7 @@ for my $area (@areas) {
 
 my @id_list = Agora::Program::extract_id(Agora::Constant->LOCAL_INDEX);
 foreach my $id (@id_list) {
+	say $id;
 	my $file = sprintf Agora::Constant->LOCAL_DETAIL, $id;
 	open my $ENTRY_FILE, '<:encoding(cp932)', $file or die $!;
 	local $/ = undef;
@@ -67,11 +68,12 @@ foreach my $id (@id_list) {
 	my $detail = $root->look_down(id => 'detail');
 
 	my %entry;
-	$entry{id}       = $id;
-	$entry{title}    = $base->look_down(class => 'title')->as_trimmed_text();
-	$entry{category} = $base->look_down(class => 'category')->as_trimmed_text();
-	$entry{category} = $category->get_id($entry{category});
-	$entry{original} = sprintf Agora::Constant->REMOTE_DETAIL, $id;
+	$entry{id}        = $id;
+	$entry{title}     = $base->look_down(class => 'title')->as_trimmed_text();
+	my $category_type = $base->look_down(class => 'number')->as_trimmed_text();
+	$entry{category}  = $base->look_down(class => 'category')->as_trimmed_text();
+	$entry{category}  = $category->get_id($category_type. "：". $entry{category});
+	$entry{original}  = sprintf Agora::Constant->REMOTE_DETAIL, $id;
 
 	my @base_dl   = $base->find_by_tag_name('dl');
 	my @detail_dl = $detail->find_by_tag_name('dl');
@@ -100,16 +102,8 @@ foreach my $id (@id_list) {
 				$_ .= "名";
 			}
 		}
+		$method //= '';
 		$method =~ s/http s:/https:/;
-		if ($id eq "Bb-601") {
-			my $sss = '電子メール（science_pr@yahoo.co.jp" target="_blank">Webフォームから';
-			if ($method =~ /$sss/) {
-				$method =~ s/$sss/電子メール（science_pr\@yahoo.co.jp）/;
-			}
-			else {
-				warn "$id reservation hook NOT WORKED\n";
-			}
-		}
 		$method =~ s/Webフォーム\( ([^ ]+) \)から/$1 /g;
 		$method =~ s/ウェブサイト上フォーム（([^）]*)）/$1 /g;
 		$method =~ s/電子メール（([^）]*)）/$1 /g;
@@ -119,7 +113,7 @@ foreach my $id (@id_list) {
 		$method =~ s/ $//;
 		if ($res || $open) {
 			$entry{reservation} = '';
-			$entry{reservation} .= "事前申込枠：$res\n";
+			$entry{reservation} .= "事前申込枠：$res\n" if length $res;
 			$entry{reservation} .= "事前申込期間：$start $end\n" if $end;
 			$entry{reservation} .= "事前申込方法：$method\n" if $method;
 			$entry{reservation} .= "特記事項：$note\n" if $note;
@@ -136,13 +130,13 @@ foreach my $id (@id_list) {
 		y     => int((0.05 + 0.1 * $location_y)*1000)/1000,
 	};
 
-	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、・11日（日）14:30-16：00") {
+	if ($entry{schedule} eq "11月10日（土）・11日（日）10日（10:30-12:00,12:30-14:00）、11日（14:30-16:00）") {
 		$entry{schedule} = "[Sat] 10:30-12:00 [Sat] 12:30-14:00 [Sun] 14:30-16:00";
 		push @timeframes, { entry => $id, day => 'Sat', start => 1030, end => 1200 };
 		push @timeframes, { entry => $id, day => 'Sat', start => 1230, end => 1400 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1430, end => 1600 };
 	}
-	elsif ($entry{schedule} eq "11月10日（土）13:30-16:30・11日（日）10:00-16:00") {
+	elsif ($entry{schedule} eq "11月10日（土）・11日（日）10日（13:30-16:30）、11日（10:00-16:00）") {
 		$entry{schedule} = "[Sat] 13:30-16:00 [Sun] 10:00-16:00";
 		push @timeframes, { entry => $id, day => 'Sat', start => 1330, end => 1600 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1000, end => 1600 };
@@ -184,22 +178,6 @@ foreach my $id (@id_list) {
 	}
 
 	$entry{website} =~ s/\(.+\)//;
-	if ($id eq "Aa-003") {
-		if ($entry{website} eq "http://biodiversity.or.jp/ scienceagora.html") {
-			$entry{website} =~ s/ //;
-		}
-		else {
-			warn "$id website hook NOT WORKED\n";
-		}
-	}
-	elsif($id eq "Ab-354") {
-		if ($entry{website} eq "http;//www.wadaju.com") {
-			$entry{website} =~ s/;/:/;
-		}
-		else {
-			warn "$id website hook NOT WORKED\n";
-		}
-	}
 
 	for (keys %entry) {
 		$entry{$_} = undef unless length $entry{$_};
