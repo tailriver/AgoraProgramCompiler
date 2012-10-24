@@ -18,11 +18,11 @@ __PACKAGE__->add_columns(
 	},
 	x => {
 		data_type => 'REAL',
-		is_nullable => 0,
+		is_nullable => 1,
 	},
 	y => {
 		data_type => 'REAL',
-		is_nullable => 0,
+		is_nullable => 1,
 	},
 );
 
