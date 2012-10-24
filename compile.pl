@@ -105,10 +105,19 @@ foreach my $id (@id_list) {
 		$method //= '';
 		$method =~ s/http s:/https:/;
 		$method =~ s/Webフォーム\( ([^ ]+) \)から/$1 /g;
-		$method =~ s/ウェブサイト上フォーム（([^）]*)）/$1 /g;
+		$method =~ s/申込フォーム\( ([^ ]+) \)から/$1 /g;
 		$method =~ s/電子メール（([^）]*)）/$1 /g;
 		$method =~ s/電話（([^）]*)）/$1 /g;
+		$method =~ s/([-\d]{12})\s*FAX（\1）/$1/g;
 		$method =~ s/その他（([^）]*)）/$1 /g;
+		if ($id eq 'Bb-603') {
+			if ($method =~ /^（(.+?)）(.+?)はがき（） $/) {
+				$method = "$1 $2";
+			}
+			else {
+				warn "$id reservation hook NOT WORKED";
+			}
+		}
 		$method =~ tr/ / /s;
 		$method =~ s/ $//;
 		if ($res || $open) {

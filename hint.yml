@@ -3,6 +3,7 @@ area:
     description: 会場ID
     warning: meta information
   name:
+    ja: 会場
     description: 会場名称
   abbrev:
     description: 会場略称
@@ -20,6 +21,7 @@ category:
     description: 出展形式ID
     warning: meta information
   name:
+    ja: 出展形式
     description: 出展形式名称
   abbrev:
     description: 出展形式略称
@@ -34,6 +36,7 @@ entry:
     ja: タイトル
   category:
     ja: 出展形式
+    ref: category.name
   sponsor:
     ja: 主催
   cosponsor:
@@ -42,6 +45,7 @@ entry:
     ja: 日時
   location:
     ja: 会場
+    ref: area.name
   abstract:
     ja: 概要
   content:
@@ -55,7 +59,7 @@ entry:
   note:
     ja: 備考
   original:
-    ja: 公式ウェブサイトの企画詳細
+    ja: 公式サイトで企画詳細
 
 hint:
   id:

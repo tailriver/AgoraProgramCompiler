@@ -19,6 +19,8 @@ $(distfile): compile.pl $(programs) area.yml category.yml hint.yml
 	@mkdir -p $(dir $@)
 	./compile.pl $@
 	sqlite3 $@ "vacuum"
+	sqlite3 $@ "select area,count(*) from location group by area"
+	sqlite3 $@ "select category,count(*) from entry group by category"
 
 %.gz: %
 	gzip -c $< >$@
