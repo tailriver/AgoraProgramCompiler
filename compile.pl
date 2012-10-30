@@ -131,15 +131,14 @@ foreach my $id (@id_list) {
 		}
 	}
 
-	my($location_y, $location_x) = ($id =~ /(\d)(\d)$/ ? ($1,$2) : (0.5,0.5));
 	push @locations, {
 		entry => $id,
 		area  => $area->get_id(delete $entry{location}),
-		x     => int((0.05 + 0.1 * $location_x)*1000)/1000,
-		y     => int((0.05 + 0.1 * $location_y)*1000)/1000,
+		x     => $id eq 'OP' ? 2.0 : 0.54,
+		y     => $id eq 'OP' ? 2.0 : 0.5,
 	};
 
-	if ($entry{schedule} eq "11月10日（土）・11日（日）10日（10:30-12:00,12:30-14:00）、11日（14:30-16:00）") {
+	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00・11日（日）14:30-16:00") {
 		$entry{schedule} = "[Sat] 10:30-12:00 [Sat] 12:30-14:00 [Sun] 14:30-16:00";
 		push @timeframes, { entry => $id, day => 'Sat', start => 1030, end => 1200 };
 		push @timeframes, { entry => $id, day => 'Sat', start => 1230, end => 1400 };
