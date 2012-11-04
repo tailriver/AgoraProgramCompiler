@@ -163,7 +163,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/A7_iOS@2x.png'
 
-'産業技術総合研究所　本館4階第1会議室':
+'産業技術総合研究所本館4階第1会議室':
   id: B4
   abbrev: 産総研 本館4階 第1会議室
   image:
@@ -174,7 +174,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B4_iOS@2x.png'
 
-'産業技術総合研究所　別館11階会議室1':
+'産業技術総合研究所別館11階会議室1':
   id: B91
   abbrev: 産総研 別館11階 会議室1
   image:
@@ -185,7 +185,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
 
-'産業技術総合研究所　別館11階会議室2':
+'産業技術総合研究所別館11階会議室2':
   id: B92
   abbrev: 産総研 別館11階 会議室2
   image:
@@ -196,7 +196,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
 
-'産業技術総合研究所　別館11階会議室3':
+'産業技術総合研究所別館11階会議室3':
   id: B93
   abbrev: 産総研 別館11階 会議室3
   image:
@@ -207,7 +207,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
 
-'産業技術総合研究所　別館11階会議室2/3':
+'産業技術総合研究所別館11階会議室2/3':
   id: B930
   abbrev: 産総研 別館11階 会議室2/3
   image:
@@ -218,7 +218,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
 
-'産業技術総合研究所　別館11階多目的室':
+'産業技術総合研究所別館11階多目的室':
   id: B94
   abbrev: 産総研 別館11階 多目的室
   image:
@@ -229,7 +229,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B9_iOS@2x.png'
 
-'産業技術総合研究所　本館・別館1階':
+'産業技術総合研究所本館・別館1階':
   id: Bx1
   abbrev: 産総研 本館・別館1階
   image: 
@@ -240,7 +240,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B1_iOS@2x.png'
 
-'産業技術総合研究所　別館1階':
+'産業技術総合研究所別館1階':
   id: Bx2
   abbrev: 産総研 別館1階
   image: 
@@ -306,7 +306,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/D_iOS@2x.png'
 
-'東京国際交流館　プラザ平成1階-2階':
+'東京国際交流館プラザ平成1階-2階':
   id: E
   abbrev: 東京国際交流館
   image:

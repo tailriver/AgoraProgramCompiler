@@ -15,6 +15,7 @@ use Agora::Hint;
 use Agora::Program;
 use Agora::Schema;
 use HTML::TreeBuilder;
+use Try::Tiny;
 
 my $sqlite_file = $ARGV[0];
 
@@ -54,7 +55,6 @@ for my $area (@areas) {
 
 my @id_list = Agora::Program::extract_id(Agora::Constant->LOCAL_INDEX);
 foreach my $id (@id_list) {
-	say $id;
 	my $file = sprintf Agora::Constant->LOCAL_DETAIL, $id;
 	open my $ENTRY_FILE, '<:encoding(cp932)', $file or die $!;
 	local $/ = undef;
@@ -68,12 +68,10 @@ foreach my $id (@id_list) {
 	my $detail = $root->look_down(id => 'detail');
 
 	my %entry;
-	$entry{id}        = $id;
-	$entry{title}     = $base->look_down(class => 'title')->as_trimmed_text();
-	my $category_type = $base->look_down(class => 'number')->as_trimmed_text();
-	$entry{category}  = $base->look_down(class => 'category')->as_trimmed_text();
-	$entry{category}  = $category->get_id($category_type. "：". $entry{category});
-	$entry{original}  = sprintf Agora::Constant->REMOTE_DETAIL, $id;
+	$entry{id}       = $id;
+	$entry{title}    = $base->look_down(class => 'title')->as_trimmed_text();
+	$entry{category} = $base->look_down(class => 'category')->as_trimmed_text();
+	$entry{original} = sprintf Agora::Constant->REMOTE_DETAIL, $id;
 
 	my @base_dl   = $base->find_by_tag_name('dl');
 	my @detail_dl = $detail->find_by_tag_name('dl');
@@ -81,75 +79,20 @@ foreach my $id (@id_list) {
 		my ($k, $v) = dl_parse($_);
 		$entry{to_en($k)} = $v;
 	}
+	$entry{reservation} = delete($entry{res1}). delete($entry{res2});
 
-	if ($id eq 'OP') {
-		if ($entry{title} =~ /http/) {
-			$entry{title} =~ s/ \(.*\)$//;
-		}
-		else {
-			warn "$id title hook NOT WORKED\n";
-		}
-	}
-
-	{
-		my $s = (delete $entry{res1}). (delete $entry{res2});
-		my($res)  = $s =~ /事前枠（人）：(.*?)申込開始予定日時/;
-		my($open) = $s =~ /当日枠（人）：(.*)$/;
-		my($start, $end)   = $s =~ /開始予定日時：(.*?) 締切予定日時：(.*?)申込方法/;
-		my($method, $note) = $s =~ /申込方法(.*?)特記事項：(.*?)当日枠（人）：/;
-		for ($res, $open) {
-			if ($_ && $_ !~ /名|人/ && $_ ne "残り") {
-				$_ .= "名";
-			}
-		}
-		$method //= '';
-		$method =~ s/http s:/https:/;
-		$method =~ s/Webフォーム\( ([^ ]+) \)から/$1 /g;
-		$method =~ s/申込フォーム\( ([^ ]+) \)から/$1 /g;
-		$method =~ s/電子メール（([^）]*)）/$1 /g;
-		$method =~ s/電話（([^）]*)）/$1 /g;
-		$method =~ s/([-\d]{12})\s*FAX（\1）/$1/g;
-		$method =~ s/その他（([^）]*)）/$1 /g;
-		if ($id eq 'Bb-603') {
-			if ($method =~ /^（(.+?)）(.+?)はがき（） $/) {
-				$method = "$1 $2";
-			}
-			else {
-				warn "$id reservation hook NOT WORKED";
-			}
-		}
-		$method =~ tr/ / /s;
-		$method =~ s/ $//;
-		if ($res || $open) {
-			$entry{reservation} = '';
-			$entry{reservation} .= "事前申込枠：$res\n" if length $res;
-			$entry{reservation} .= "事前申込期間：$start $end\n" if $end;
-			$entry{reservation} .= "事前申込方法：$method\n" if $method;
-			$entry{reservation} .= "特記事項：$note\n" if $note;
-			$entry{reservation} .= "当日参加枠：$open";
-			chomp $entry{reservation};
-		}
-	}
-
-	push @locations, {
-		entry => $id,
-		area  => $area->get_id(delete $entry{location}),
-		x     => $id eq 'OP' ? 2.0 : 0.54,
-		y     => $id eq 'OP' ? 2.0 : 0.5,
-	};
-
-	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00・11日（日）14:30-16:00") {
+	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、11日（日）14:30-16:00") {
 		$entry{schedule} = "[Sat] 10:30-12:00 [Sat] 12:30-14:00 [Sun] 14:30-16:00";
 		push @timeframes, { entry => $id, day => 'Sat', start => 1030, end => 1200 };
 		push @timeframes, { entry => $id, day => 'Sat', start => 1230, end => 1400 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1430, end => 1600 };
 	}
-	elsif ($entry{schedule} eq "11月10日（土）・11日（日）10日（13:30-16:30）、11日（10:00-16:00）") {
-		$entry{schedule} = "[Sat] 13:30-16:00 [Sun] 10:00-16:00";
-		push @timeframes, { entry => $id, day => 'Sat', start => 1330, end => 1600 };
+	elsif ($entry{schedule} eq "11月10日（土）13:30-16:30、11日（日）10:00-16:00") {
+		$entry{schedule} = "[Sat] 13:30-16:30 [Sun] 10:00-16:00";
+		push @timeframes, { entry => $id, day => 'Sat', start => 1330, end => 1630 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1000, end => 1600 };
 	}
-	elsif ($entry{schedule} eq "11月11日（日）10:30-12:00,12:30-14:00") {
+	elsif ($entry{schedule} eq "11月11日（日） 10:30-12:00,12:30-14:00") {
 		$entry{schedule} = "[Sun] 10:30-12:00 [Sun] 12:30-14:00";
 		push @timeframes, { entry => $id, day => 'Sun', start => 1030, end => 1200 };
 		push @timeframes, { entry => $id, day => 'Sun', start => 1230, end => 1400 };
@@ -185,12 +128,53 @@ foreach my $id (@id_list) {
 		}
 	}
 
-	$entry{website} =~ s/\(.+\)//;
+	apply_hook('Aa-077', \%entry, '★実験の内容',
+			sub{ exists $_[0] },
+			sub{ delete $entry{'★実験の内容'} }
+	);
+
+	apply_hook('Ab-366', \%entry, 'note',
+			sub { $_[0] =~ /fromEmail=true&/ },
+			sub { $_[0] =~ s/fromEmail=true&// }
+	);
+
+	apply_hook('Ea-963', \%entry, 'category',
+			sub{ $_[0] !~ /：/ },
+			sub{ $_[0] = "終日出展：". $_[0] }
+	);
+	apply_hook('Ea-963', \%entry, 'reservation',
+			sub { $_[0] =~ /申込フォーム/ },
+			sub { $_[0] =~ s/申込フォーム/お問い合わせフォーム/ }
+	);
+
+	apply_hook('OP', \%entry, 'category',
+			sub{ $_[0] !~ /：/ },
+			sub{ $_[0] = "終日出展：". $_[0] }
+	);
+	apply_hook('OP', \%entry, 'title',
+			sub{ $_[0] =~ /http/ },
+			sub{ $_[0] =~ s/ \(.*\)$//; }
+	);
+	apply_hook('OP', \%entry, 'reservation',
+			sub { $_[0] =~ /Webフォーム/ },
+			sub { $_[0] =~ s/Webフォーム/お問い合わせフォーム/ }
+	);
+
+	$entry{category}    =  $category->get_id($entry{category});
+	$entry{location}    =~ tr/　//d;
+	$entry{reservation} =  get_reservation($id, $entry{reservation});
+	$entry{website}     =~ s/\(.+\)//;
+
+	push @locations, {
+		entry => $id,
+		area  => $area->get_id(delete $entry{location}),
+		x     => $id eq 'OP' ? 2.0 : 0.54,
+		y     => $id eq 'OP' ? 2.0 : 0.5,
+	};
 
 	for (keys %entry) {
 		$entry{$_} = undef unless length $entry{$_};
 	}
-
 	push @entries, \%entry;
 }
 
@@ -202,8 +186,14 @@ my $schema = Agora::Schema->connect("dbi:SQLite:dbname=$sqlite_file");
 my $txn = sub {
 	my ($resultset, $arrayref) = @_;
 	my $rs = $schema->resultset($resultset);
-	for (@$arrayref) {
-		$rs->create($_);
+	for my $row (@$arrayref) {
+		try {
+			$rs->create($row);
+		} catch {
+			use YAML;
+			warn $_. "\n";
+			die YAML::Dump $row if $_;
+		};
 	}
 };
 
@@ -228,4 +218,53 @@ sub dl_parse {
 
 sub to_en {
 	return (exists $table_to_en{$_[0]}) ? $table_to_en{$_[0]} : $_[0];
+}
+
+sub get_reservation {
+	my($id, $s) = @_;
+	my($res)  = $s =~ /事前枠（人）：(.*?)申込開始予定日時/;
+	my($open) = $s =~ /当日枠（人）：(.*)$/;
+	my($start, $end)   = $s =~ /開始予定日時：(.*?) 締切予定日時：(.*?)申込方法/;
+	my($method, $note) = $s =~ /申込方法：?(.*?)特記事項：(.*?)当日枠（人）：/;
+	for ($res, $open) {
+		tr/０１２３４５６７８９/0123456789/ if defined $_;
+		if (length $_ && $_ !~ /名|人/ && $_ ne "残り") {
+			$_ .= "名";
+		}
+	}
+	$method //= '';
+	$method =~ s/お問い合わせフォーム\( ([^ ]+) \)から/$1 /;
+	$method =~ s/eメール（([^）]*)）/$1 /;
+	$method =~ s/電話（([^）]*)）\s*(?:FAX（\1）)?/$1 /;
+	$method =~ s/ハガキ（はがき）//;
+	$method =~ s/その他（その他）//;
+	$method =~ tr/ / /s;
+	$method =~ s/^ +//;
+	$method =~ s/ +$//;
+	if (length $method) {
+		say "$id $method";
+	}
+	if ($res || $open) {
+		my $str = '';
+		$str .= "事前申込枠：$res\n" if $res;
+		$str .= "事前申込期間：$start $end\n" if $end;
+		$str .= "事前申込方法：$method\n" if $method;
+		$str .= "特記事項：$note\n" if $note;
+		$str .= "当日参加枠：$open" if $open;
+		$str =~ s/\n+$//;
+		return $str;
+	}
+	return undef;
+}
+
+sub apply_hook {
+	my($id, $entry, $key, $condition, $fix) = @_;
+	return if $entry->{id} ne $id;
+	if ($condition->($entry->{$key})) {
+		$fix->($entry->{$key});
+	}
+	else {
+		warn "$id $key hook NOT WORKED\n";
+		warn "[$entry->{$key}]\n";
+	}
 }
