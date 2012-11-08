@@ -138,22 +138,16 @@ foreach my $id (@id_list) {
 			sub { $_[0] =~ s/fromEmail=true&// }
 	);
 
-	apply_hook('Ea-963', \%entry, 'category',
-			sub{ $_[0] !~ /：/ },
-			sub{ $_[0] = "終日出展：". $_[0] }
-	);
 	apply_hook('Ea-963', \%entry, 'reservation',
 			sub { $_[0] =~ /申込フォーム/ },
 			sub { $_[0] =~ s/申込フォーム/お問い合わせフォーム/ }
 	);
 
-	apply_hook('OP', \%entry, 'category',
-			sub{ $_[0] !~ /：/ },
-			sub{ $_[0] = "終日出展：". $_[0] }
-	);
 	apply_hook('OP', \%entry, 'title',
-			sub{ $_[0] =~ /http/ },
-			sub{ $_[0] =~ s/ \(.*\)$//; }
+			sub { $_[0] =~ /http/ },
+			sub { $_[0] =~ s/ \(.*\)$// }
+	);
+	apply_hook('OP', \%entry, 'location',
 	);
 	apply_hook('OP', \%entry, 'reservation',
 			sub { $_[0] =~ /Webフォーム/ },
