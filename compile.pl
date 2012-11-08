@@ -12,6 +12,7 @@ use Agora::Area;
 use Agora::Category;
 use Agora::Constant;
 use Agora::Hint;
+use Agora::Location;
 use Agora::Program;
 use Agora::Schema;
 use Clone qw(clone);
@@ -37,6 +38,7 @@ my %table_to_en = (
 my $area     = Agora::Area->new('area.yml');
 my $category = Agora::Category->new('category.yml');
 my $hint     = Agora::Hint->new('hint.yml');
+my $location = Agora::Location->new('location.yml');
 
 my @areas      = $area->as_list;
 my @categories = $category->as_list;
@@ -168,11 +170,15 @@ foreach my $id (@id_list) {
 	$entry{reservation} =  get_reservation($id, $entry{reservation});
 	$entry{website}     =~ s/\(.+\)//;
 
-	push @locations, {
-		entry => $id,
-		area  => $area->get_id(delete $entry{location}),
-		x     => $id eq 'OP' ? 2.0 : 0.54,
-		y     => $id eq 'OP' ? 2.0 : 0.5,
+	try {
+		push @locations, {
+			entry => $id,
+			area  => $area->get_id(delete $entry{location}),
+			x     => $location->get_x($id),
+			y     => $location->get_y($id),
+		};
+	} catch {
+		die "$id: $_\n" if $_;
 	};
 
 	for (keys %entry) {

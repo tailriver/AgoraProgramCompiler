@@ -1,0 +1,68 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+// <!--
+$(function(){
+	var width  = 800;
+	var height = 600;
+	var ratio = 1;
+
+	$('img')
+	.width(width * ratio)
+	.height(height * ratio)
+	.bind('mousemove', function(e){
+		var leftPos = e.offsetX / width  / ratio;
+		var topPos  = e.offsetY / height / ratio;
+
+		$('#pos')
+		.text(leftPos.toFixed(3) + '-' + topPos.toFixed(3))
+		.css({ left: e.pageX, top: e.pageY });
+
+		$(':input')
+		.val($('#pos').text())
+		.select();
+	});
+});
+// --></script>
+<style type="text/css">
+body {
+	position: relative;
+}
+
+body > * {
+	margin: auto;
+}
+
+#clipboard {
+	position: fixed;
+	top: 2em;
+	left: 2em;
+}
+
+img {
+	display: block;
+	background: gray;
+	cursor: crosshair;
+}
+
+#pos {
+	position: absolute;
+	background: white;
+}
+</style>
+</head>
+<body>
+<div id="clipboard"><input type="text" /></div>
+
+<img src="dist/2012/area/A1.png" />
+<img src="dist/2012/area/A3.png" />
+<img src="dist/2012/area/A7.png" />
+<img src="dist/2012/area/B.png" />
+<img src="dist/2012/area/C1.png" />
+<img src="dist/2012/area/C.png"/>
+<img src="dist/2012/area/all.png"/>
+
+<div id="pos"></div>
+</body>
+</html>
