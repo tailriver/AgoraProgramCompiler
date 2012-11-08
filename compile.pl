@@ -61,6 +61,7 @@ for my $area (@areas) {
 }
 
 my @id_list = Agora::Program::extract_id(Agora::Constant->LOCAL_INDEX);
+my @skip_id = qw(Aa-030 Aa-032);
 foreach my $id (@id_list) {
 	my $file = sprintf Agora::Constant->LOCAL_DETAIL, $id;
 	open my $ENTRY_FILE, '<:encoding(cp932)', $file or die $!;
@@ -80,12 +81,25 @@ foreach my $id (@id_list) {
 	$entry{category} = $base->look_down(class => 'category')->as_trimmed_text();
 	$entry{original} = sprintf Agora::Constant->REMOTE_DETAIL, $id;
 
-	my @base_dl   = $base->find_by_tag_name('dl');
-	my @detail_dl = $detail->find_by_tag_name('dl');
-	for (@base_dl, @detail_dl) {
-		my ($k, $v) = dl_parse($_);
-		$entry{to_en($k)} = $v;
-	}
+	try {
+		my @base_dl   = $base->find_by_tag_name('dl');
+		my @detail_dl = $detail->find_by_tag_name('dl');
+		for (@base_dl, @detail_dl) {
+			my ($k, $v) = dl_parse($_);
+			$entry{to_en($k)} = $v;
+		}
+	} catch {
+		my $msg = $_;
+		if (grep { $id eq $_ } @skip_id) {
+			warn "skip $id\n";
+			$entry{skip} = 1;
+		}
+		else {
+			die "$id: $msg\n" if $msg;
+		}
+	};
+	next if exists $entry{skip};
+
 	$entry{location} =~ s/\( http[^)]+ \)//;
 	$entry{location} =~ s/ＣＡＮ/CAN/;
 	$entry{reservation} = delete($entry{res1}). delete($entry{res2});
