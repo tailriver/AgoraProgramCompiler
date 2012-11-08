@@ -14,6 +14,7 @@ use Agora::Constant;
 use Agora::Hint;
 use Agora::Program;
 use Agora::Schema;
+use Clone qw(clone);
 use HTML::TreeBuilder;
 use Try::Tiny;
 
@@ -46,11 +47,15 @@ my @locations;
 my @timeframes;
 
 for my $area (@areas) {
-	my @images = @{delete $area->{image}};
-	for my $image (@images) {
+	my $images = clone $area->{image};
+	for my $image (@$images) {
 		$image->{area} = $area->{id};
 		push @area_images, $image;
 	}
+}
+
+for my $area (@areas) {
+	delete $area->{image};
 }
 
 my @id_list = Agora::Program::extract_id(Agora::Constant->LOCAL_INDEX);
@@ -79,6 +84,8 @@ foreach my $id (@id_list) {
 		my ($k, $v) = dl_parse($_);
 		$entry{to_en($k)} = $v;
 	}
+	$entry{location} =~ s/\( http[^)]+ \)//;
+	$entry{location} =~ s/ＣＡＮ/CAN/;
 	$entry{reservation} = delete($entry{res1}). delete($entry{res2});
 
 	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、11日（日）14:30-16:00") {
@@ -148,6 +155,8 @@ foreach my $id (@id_list) {
 			sub { $_[0] =~ s/ \(.*\)$// }
 	);
 	apply_hook('OP', \%entry, 'location',
+			sub { $_[0] eq "日本科学未来館7階みらいCANホール" },
+			sub { $_[0] = "日本科学未来館 7階 みらいCANホール" }
 	);
 	apply_hook('OP', \%entry, 'reservation',
 			sub { $_[0] =~ /Webフォーム/ },

@@ -10,32 +10,28 @@ use YAML;
 sub new {
 	my($self, $yamlfile) = @_;
 	my $data = YAML::LoadFile($yamlfile);
-	my $dummy_url_base = "http://tailriver.net/agoraguide/2012/area/";
 	for my $key (keys %$data) {
 		$data->{$key}{name} = $key;
 		for my $image (@{$data->{$key}{image}}) {
 			$image->{device} =~ s/_/@/g;
-			$image->{src} = $image->{device} eq 'iOS' ?
-				$dummy_url_base. 'dummy.png' : $dummy_url_base. 'dummy@2x.png';
 		}
 	}
-	return bless $data, $self;
+	return bless { yaml => $data }, $self;
 }
 
 sub get_id {
 	my($self, $key) = @_;
-	$key =~ tr/ //d;
-	$key =~ tr/Ａ-Ｚ/A-Z/;
-	if (!exists $self->{$key}) {
+	if (!exists $self->{yaml}{$key}) {
 		croak "unknown area name '$key' found";
 	}
-	return $self->{$key}{id};
+	return $self->{yaml}{$key}{id};
 }
 
 sub as_list {
 	my $self = shift;
-	my @key_order = sort { $self->{$a}{id} cmp $self->{$b}{id} } (keys %$self);
-	return map { $self->{$_} } @key_order;
+	my $yaml = $self->{yaml};
+	my @key_order = sort { $yaml->{$a}{id} cmp $yaml->{$b}{id} } (keys %$yaml);
+	return map { $yaml->{$_} } @key_order;
 }
 
 
