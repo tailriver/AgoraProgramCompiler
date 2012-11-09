@@ -16,6 +16,7 @@ use Agora::Location;
 use Agora::Program;
 use Agora::Schema;
 use Clone qw(clone);
+use HTML::FormatText;
 use HTML::TreeBuilder;
 use Try::Tiny;
 
@@ -39,6 +40,7 @@ my $area     = Agora::Area->new('area.yml');
 my $category = Agora::Category->new('category.yml');
 my $hint     = Agora::Hint->new('hint.yml');
 my $location = Agora::Location->new('location.yml');
+my $formatter = HTML::FormatText->new(rightmargin => 10000);
 
 my @areas      = $area->as_list;
 my @categories = $category->as_list;
@@ -102,7 +104,7 @@ foreach my $id (@id_list) {
 
 	$entry{location} =~ s/\( http[^)]+ \)//;
 	$entry{location} =~ s/ＣＡＮ/CAN/;
-	$entry{reservation} = delete($entry{res1}). delete($entry{res2});
+	$entry{reservation} = delete($entry{res1}). "\n". delete($entry{res2});
 
 	if ($entry{schedule} eq "11月10日（土）10:30-12:00,12:30-14:00、11日（日）14:30-16:00") {
 		$entry{schedule} = "[Sat] 10:30-12:00 [Sat] 12:30-14:00 [Sun] 14:30-16:00";
@@ -234,7 +236,9 @@ exit;
 
 sub dl_parse {
 	my $dt = $_[0]->find_by_tag_name('dt')->as_trimmed_text();
-	my $dd = $_[0]->find_by_tag_name('dd')->as_trimmed_text();
+	my $dd = $_[0]->find_by_tag_name('dd')->format($formatter);
+	$dd =~ s/^\s+//mg;
+	$dd =~ s/(\S)\s+$/$1/mg;
 	$dd = '' if $dd eq '-';
 	return ($dt, $dd);
 }
@@ -245,36 +249,39 @@ sub to_en {
 
 sub get_reservation {
 	my($id, $s) = @_;
-	my($res)  = $s =~ /事前枠（人）：(.*?)申込開始予定日時/;
-	my($open) = $s =~ /当日枠（人）：(.*)$/;
-	my($start, $end)   = $s =~ /開始予定日時：(.*?) 締切予定日時：(.*?)申込方法/;
-	my($method, $note) = $s =~ /申込方法：?(.*?)特記事項：(.*?)当日枠（人）：/;
+	$s =~ s/なし（自由に参加できます）\n//;
+	$s =~ s/あり（当日見学のみの参加は可能です）\n//;
+	$s =~ s/あり（当日枠もあります）\n//;
+	$s =~ s/\*\s*\n//g;
+	my $res  = $s =~ s/事前枠（人）：(.*)\n//  && $1;
+	my $open = $s =~ s/当日枠（人）：(.*)\n?// && $1;
+	my($start, $end) = $s =~ s/\* 申込開始予定日時：(.*?) 締切予定日時：(.*)\n// && ($1, $2);
+	my $note = $s =~ s/\* 特記事項：(.*)\n//   && $1;
 	for ($res, $open) {
 		tr/０１２３４５６７８９/0123456789/ if defined $_;
 		if (length $_ && $_ !~ /名|人/ && $_ ne "残り") {
 			$_ .= "名";
 		}
 	}
-	$method //= '';
-	$method =~ s/お問い合わせフォーム\( ([^ ]+) \)から/$1 /;
-	$method =~ s/eメール（([^）]*)）/$1 /;
-	$method =~ s/電話（([^）]*)）\s*(?:FAX（\1）)?/$1 /;
-	$method =~ s/ハガキ（はがき）//;
-	$method =~ s/その他（その他）//;
-	$method =~ tr/ / /s;
-	$method =~ s/^ +//;
-	$method =~ s/ +$//;
-	if (length $method) {
-		say "$id $method";
+	my @methods;
+	$s =~ s/\* 申込方法：?\n//;
+	$s =~ s/\*\s+お問い合わせフォーム\( ([^ ]+) \)から\n// && push @methods, $1;
+	$s =~ s/\*\s+eメール（([^）]*)）\n// && push @methods, $1;
+	$s =~ s/\*\s+電話（([^）]*)）\n(?:\*\s+FAX（\1）\n)?// && push @methods, $1;
+	$s =~ s/\*\s+ハガキ（はがき）\n//;
+	$s =~ s/\*\s+その他（その他）\n//;
+
+	if ($s ne "") {
+		die "$id: reservation [$s]\n";
 	}
 	if ($res || $open) {
 		my $str = '';
 		$str .= "事前申込枠：$res\n" if $res;
 		$str .= "事前申込期間：$start $end\n" if $end;
-		$str .= "事前申込方法：$method\n" if $method;
+		$str .= "事前申込方法：@methods\n" if @methods;
 		$str .= "特記事項：$note\n" if $note;
 		$str .= "当日参加枠：$open" if $open;
-		$str =~ s/\n+$//;
+		chomp $str;
 		return $str;
 	}
 	return undef;

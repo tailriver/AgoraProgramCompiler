@@ -3,6 +3,7 @@ distfile=$(distdir)/2012.sqlite3
 
 gzfile=$(patsubst %,%.gz,$(distfile))
 programs=$(wildcard programs/*.html)
+yamlfiles=$(wildcard *.yml)
 
 all: upload
 
@@ -15,7 +16,7 @@ compress: $(gzfile)
 upload: update compress
 	./upload.sh $(distdir)
 
-$(distfile): compile.pl $(programs) area.yml category.yml hint.yml
+$(distfile): compile.pl $(programs) $(yamlfiles)
 	@mkdir -p $(dir $@)
 	./compile.pl $@
 	sqlite3 $@ "vacuum"

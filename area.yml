@@ -1,5 +1,5 @@
 '日本科学未来館 1階':
-  id: A1
+  id: A11
   abbrev: 未来館 1階 企画展示ゾーン
   image: &A1
     - device: iOS
@@ -8,11 +8,6 @@
       src: 'http://tailriver.net/agoraguide/2012/area/A1@2x.png'
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/A1@2x.png'
-
-'日本科学未来館 1階 ステージ':
-  id: A11
-  abbrev: 未来館 1階 ステージ
-  image: *A1
 
 '日本科学未来館 1階 オリエンテーションルーム1（メイン入口側）':
   id: A12
@@ -34,6 +29,11 @@
   abbrev: 未来館 1階 OR2（通用口側）
   image: *A1
 
+'日本科学未来館 1階 ステージ':
+  id: A16
+  abbrev: 未来館 1階 ステージ
+  image: *A1
+
 '日本科学未来館 3階':
   id: A3
   abbrev: 未来館 3階
@@ -45,9 +45,9 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/A3@2x.png'
 
-'日本科学未来館 7階 みらいCANホール':
-  id: A70
-  abbrev: 未来館 7階 みらいCANホール
+'日本科学未来館 7階 ロビー':
+  id: A71
+  abbrev: 未来館 7階 ロビー
   image: &A7
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/A7.png'
@@ -57,43 +57,43 @@
       src: 'http://tailriver.net/agoraguide/2012/area/A7@2x.png'
 
 '日本科学未来館 7階 会議室1':
-  id: A71
+  id: A72
   abbrev: 未来館 7階 会議室1
   image: *A7
 
 '日本科学未来館 7階 会議室2':
-  id: A72
+  id: A73
   abbrev: 未来館 7階 会議室2
   image: *A7
 
 '日本科学未来館 7階 会議室3':
-  id: A73
+  id: A74
   abbrev: 未来館 7階 会議室3
   image: *A7
 
+'日本科学未来館 7階 ドームシアター前':
+  id: A75
+  abbrev: 未来館 7階 ドームシアター前
+  image: *A7
+
+'日本科学未来館 7階 みらいCANホール':
+  id: A76
+  abbrev: 未来館 7階 みらいCANホール
+  image: *A7
+
 '日本科学未来館 7階 イノベーションホール':
-  id: A74
+  id: A77
   abbrev: 未来館 7階 イノベーションホール
   image: *A7
 
 '日本科学未来館 7階 交流サロン':
-  id: A75
+  id: A78
   abbrev: 未来館 7階 交流サロン
   image: *A7
 
-'日本科学未来館 7階 ロビー':
-  id: A76
-  abbrev: 未来館 7階 ロビー
-  image: *A7
-
-'日本科学未来館 7階 ドームシアター前':
-  id: A77
-  abbrev: 未来館 7階 ドームシアター前
-  image: *A7
-
-'産業技術総合研究所本館 4階 第1会議室':
-  id: B4
-  abbrev: 産総研 本館4階 第1会議室
+'産業技術総合研究所 別館 1階':
+  id: B1
+  abbrev: 産総研 別館1階
   image: &B
     - device: iOS
       src: 'http://tailriver.net/agoraguide/2012/area/B.png'
@@ -102,39 +102,39 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/B@2x.png'
 
-'産業技術総合研究所別館 11階 会議室1':
-  id: B91
-  abbrev: 産総研 別館11階 会議室1
-  image: *B
-
-'産業技術総合研究所別館 11階 会議室2':
-  id: B92
-  abbrev: 産総研 別館11階 会議室2
-  image: *B
-
-'産業技術総合研究所別館 11階 会議室3':
-  id: B93
-  abbrev: 産総研 別館11階 会議室3
-  image: *B
-
-'産業技術総合研究所別館 11階 会議室2/3':
-  id: B930
-  abbrev: 産総研 別館11階 会議室2/3
-  image: *B
-
-'産業技術総合研究所別館 11階 多目的室':
-  id: B94
-  abbrev: 産総研 別館11階 多目的室
-  image: *B
-
-'産業技術総合研究所本館・別館 1階':
-  id: Bx1
+'産業技術総合研究所 本館・別館 1階':
+  id: B2
   abbrev: 産総研 本館・別館1階
   image: *B
 
-'産業技術総合研究所別館 1階':
-  id: Bx2
-  abbrev: 産総研 別館1階
+'産業技術総合研究所 本館 4階 第1会議室':
+  id: B3
+  abbrev: 産総研 本館4階 第1会議室
+  image: *B
+
+'産業技術総合研究所 別館 11階 多目的室':
+  id: B41
+  abbrev: 産総研 別館11階 多目的室
+  image: *B
+
+'産業技術総合研究所 別館 11階 会議室1':
+  id: B42
+  abbrev: 産総研 別館11階 会議室1
+  image: *B
+
+'産業技術総合研究所 別館 11階 会議室2':
+  id: B43
+  abbrev: 産総研 別館11階 会議室2
+  image: *B
+
+'産業技術総合研究所 別館 11階 会議室3':
+  id: B44
+  abbrev: 産総研 別館11階 会議室3
+  image: *B
+
+'産業技術総合研究所 別館 11階 会議室2/3':
+  id: B45
+  abbrev: 産総研 別館11階 会議室2/3
   image: *B
 
 '東京都立産業技術研究センター 1階':
@@ -159,14 +159,14 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/C@2x.png'
 
-'東京都立産業技術研究センター 5階 講堂':
-  id: C51
-  abbrev: 都産技研 5階 講堂
+'東京都立産業技術研究センター 5階 会議室':
+  id: C3
+  abbrev: 都産技研 5階 会議室
   image: *C
 
-'東京都立産業技術研究センター 5階 会議室':
-  id: C52
-  abbrev: 都産技研 5階 会議室
+'東京都立産業技術研究センター 5階 講堂':
+  id: C4
+  abbrev: 都産技研 5階 講堂
   image: *C
 
 'プロムナード公園（屋外）':
@@ -180,7 +180,7 @@
     - device: Android
       src: 'http://tailriver.net/agoraguide/2012/area/all@2x.png'
 
-'東京国際交流館プラザ平成1階-2階':
+'東京国際交流館 プラザ平成1階-2階':
   id: E
   abbrev: 東京国際交流館
   image: *all
